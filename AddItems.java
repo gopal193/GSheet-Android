@@ -23,15 +23,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddItems extends AppCompatActivity implements View.OnClickListener {
-    EditText itemName,itemBrand;
+    EditText Name,Email,Phone,Userid,Pass;
     Button bAddItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_items);
 
-        itemName = findViewById(R.id.et_item_name);
-        itemBrand = findViewById(R.id.et_brand);
+        Name = findViewById(R.id.name);
+        Email = findViewById(R.id.email);
+        Phone = findViewById(R.id.phone);
+        Userid = findViewById(R.id.userid);
+        Pass = findViewById(R.id.pass);
 
         bAddItem=findViewById(R.id.btn_add_item);
         bAddItem.setOnClickListener(this);
@@ -41,8 +44,11 @@ public class AddItems extends AppCompatActivity implements View.OnClickListener 
     private void   addItemToSheet() {
 
         final ProgressDialog loading = ProgressDialog.show(this,"Adding Item","Please wait");
-        final String name = itemName.getText().toString().trim();
-        final String brand = itemBrand.getText().toString().trim();
+        final String name = Name.getText().toString().trim();
+        final String email = Email.getText().toString().trim();
+        final String phone = Phone.getText().toString().trim();
+        final String userid = Userid.getText().toString().trim();
+        final String pass = Pass.getText().toString().trim();
 
 
 
@@ -73,7 +79,10 @@ public class AddItems extends AppCompatActivity implements View.OnClickListener 
                 //here we pass params
                 parmas.put("action","addItem");
                 parmas.put("itemName",name);
-                parmas.put("brand",brand);
+                parmas.put("email",email);
+                parmas.put("phone",phone);
+                parmas.put("userid",userid);
+                parmas.put("pass",pass);
 
                 return parmas;
             }
