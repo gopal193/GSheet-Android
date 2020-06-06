@@ -1,17 +1,36 @@
-var ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/17LNkeWRF5hxV92-kcypB1jb9-FemT6dMmSEZceuqvVo/edit#gid=0");
+//https://script.googleusercontent.com/macros/echo?user_content_key=o2FkgULUBwJI7cK3T6A9pAsQuwQNzFxVrS8TvUXnC72twV0N8MvxO5rCwLKNOrTltFlzPW0x0fA175J7U_nSRCVsWazulvqam5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnIzh36-7QgorAbISUS04aX6xLVLNtWE6vHzChoxT3USiIzybGjlRlfdHkHgZ6lN8UxdQrLui5oYVYjHAbtibbXGGkCAV3NRZPw&lib=MDMQXyuTIPHxE0bfpILQKDPLORo4JTA59
+var ss = SpreadsheetApp.openById("17LNkeWRF5hxV92-kcypB1jb9-FemT6dMmSEZceuqvVo");
 
 var sheet = ss.getSheetByName('Items'); // be very careful ... it is the sheet name .. so it should match 
 
 
-function doPost(e){
+function doPost(e)
+  {
+     var action = e.parameter.action;
+
+     if(action == 'addItem')
+     {
+           return addItem(e);
+
+     }
+
+  }
+
+
+
+
+
+
+function doGet(e){
+
 var action = e.parameter.action;
 
-if(action == 'addItem'){
-  return addItem(e);
+  if(action == 'getItems'){
+    return getItems(e);
 
-}
-
-}
+  }
+  
+  }
 
 
 
@@ -25,12 +44,51 @@ var id  =  "Item"+sheet.getLastRow(); // Item1
 
 var itemName = e.parameter.itemName;
 
-var brand = e.parameter.brand;
+var email = e.parameter.email;
+  
+var phone = e.parameter.phone;
 
-sheet.appendRow([date,id,itemName,brand]);
+var userid = e.parameter.userid;
+
+var pass = e.parameter.pass;
+
+sheet.appendRow([date,id,itemName,email,phone,userid,pass]);
 
    return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
 
 
 
+}
+
+
+
+
+
+
+
+
+
+
+function getItems(e){
+  
+  var records={};
+ 
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1,sheet.getLastColumn()).getValues();
+      data = [];
+
+  for (var r = 0, l = rows.length; r < l; r++) {
+    var row     = rows[r],
+        record  = {};
+    record['itemName'] = row[2];
+    record['email']=row[3];
+    record['phone']=row[4];
+     record['userid']=row[5];
+     record['pass']=row[6];
+    
+    data.push(record);
+    
+   }
+  records.items = data;
+  var result=JSON.stringify(records);
+  return ContentService.createTextOutput(result).setMimeType(ContentService.MimeType.JSON);
 }
